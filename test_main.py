@@ -120,8 +120,8 @@ class TestOkx(IsolatedAsyncioTestCase):
 class TestBinance(IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         self.binance = Binance(
-            api_key=os.getenv("BINANCE_API_TRADE_KEY"),
-            api_secret=os.getenv("BINANCE_API_TRADE_SECRET"),
+            api_key=os.getenv("BINANCE_API_KEY_READ"),
+            api_secret=os.getenv("BINANCE_API_SECRET_READ"),
         )
         await self.binance.sync_exchange_info()
 

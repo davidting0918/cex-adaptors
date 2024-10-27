@@ -1,7 +1,7 @@
-from .base import BaseClient
+from .base import PublicClient
 
 
-class KucoinSpot(BaseClient):
+class KucoinSpot(PublicClient):
     BASE_ENDPOINT = "https://api.kucoin.com"
 
     def __init__(self) -> None:
@@ -51,7 +51,7 @@ class KucoinSpot(BaseClient):
         return await self._get(self.spot_base_endpoint + f"/api/v3/market/orderbook/level2", params={"symbol": symbol})
 
 
-class KucoinFutures(BaseClient):
+class KucoinFutures(PublicClient):
     BASE_ENDPOINT = "https://api-futures.kucoin.com"
 
     def __init__(self) -> None:

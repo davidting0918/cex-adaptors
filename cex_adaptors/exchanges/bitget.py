@@ -1,7 +1,7 @@
-from .base import BaseClient
+from .base import PublicClient
 
 
-class BitgetUnified(BaseClient):
+class BitgetUnified(PublicClient):
     BASE_URL = "https://api.bitget.com"
 
     def __init__(self) -> None:

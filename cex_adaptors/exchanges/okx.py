@@ -1,7 +1,7 @@
-from .base import BaseClient
+from .base import PublicClient
 
 
-class OkxUnified(BaseClient):
+class OkxUnified(PublicClient):
     name = "okx"
     BASE_ENDPOINT = "https://www.okx.com"
 

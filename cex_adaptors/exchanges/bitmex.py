@@ -1,7 +1,7 @@
-from .base import BaseClient
+from .base import PublicClient
 
 
-class Bitmex(BaseClient):
+class Bitmex(PublicClient):
     name = "bitmex"
 
     def __init__(self):

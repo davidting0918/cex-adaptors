@@ -1,7 +1,7 @@
-from .base import BaseClient
+from .base import PublicClient
 
 
-class HtxSpot(BaseClient):
+class HtxSpot(PublicClient):
     BASE_URL = "https://api.huobi.pro"
 
     def __init__(self):
@@ -20,7 +20,7 @@ class HtxSpot(BaseClient):
         return await self._get(self.base_endpoint + "/market/history/kline", params=params)
 
 
-class HtxFutures(BaseClient):
+class HtxFutures(PublicClient):
     BASE_URL = "https://api.hbdm.com"
 
     def __init__(self):

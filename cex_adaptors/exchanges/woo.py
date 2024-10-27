@@ -1,7 +1,7 @@
-from .base import BaseClient
+from .base import PublicClient
 
 
-class WOOUnified(BaseClient):
+class WOOUnified(PublicClient):
     name = "woo"
     BASE_ENDPOINT = "https://api.woo.org"
 

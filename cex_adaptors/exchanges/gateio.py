@@ -1,7 +1,7 @@
-from .base import BaseClient
+from .base import PublicClient
 
 
-class GateioUnified(BaseClient):
+class GateioUnified(PublicClient):
     BASE_URL = "https://api.gateio.ws/api/v4"
 
     def __init__(self) -> None:

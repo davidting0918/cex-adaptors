@@ -1,7 +1,7 @@
-from .base import BaseClient
+from .base import PublicClient
 
 
-class BybitUnified(BaseClient):
+class BybitUnified(PublicClient):
     name = "bybit"
     BASE_ENDPOINT = "https://api.bybit.com"
 

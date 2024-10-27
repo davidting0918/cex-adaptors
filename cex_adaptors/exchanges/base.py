@@ -2,10 +2,10 @@ import json
 
 import aiohttp
 
-from .auth import BinanceAuth, OkxAuth
+from .auth import OkxAuth
 
 
-class BaseClient(object):
+class PublicClient(object):
     name = None
 
     def __init__(self) -> None:
@@ -24,11 +24,6 @@ class BaseClient(object):
                 if method == "POST":
                     kwargs["data"] = auth.body
                     del kwargs["params"]
-            elif self.name == "binance":
-                auth = BinanceAuth(**auth_data)
-                headers = auth.get_private_header()
-                kwargs["params"] = auth.update_params(kwargs.get("params", {}))
-                kwargs["headers"] = headers
 
         if method == "GET":
             async with self._session.get(url, **kwargs) as response:
