@@ -5,6 +5,8 @@ from datetime import timedelta as td
 from unittest import IsolatedAsyncioTestCase
 
 from cex_adaptors.okx import Okx
+from tests.schemas import CurrentFundingRate
+from tests.utils import validate_dict_response
 
 tracemalloc.start()
 
@@ -71,6 +73,8 @@ class TestOkx(IsolatedAsyncioTestCase):
     async def test_get_current_funding_rate(self):
         funding_rate = await self.okx.get_current_funding_rate(self.perp_instrument_id)
         self.assertTrue(funding_rate)
+
+        self.assertTrue(validate_dict_response(funding_rate, CurrentFundingRate))
         return
 
     async def test_get_history_funding_rate(self):

@@ -68,7 +68,7 @@ class Okx(OkxUnified):
 
     async def get_ticker(self, instrument_id: str):
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in {self.name} exchange_info")
+            raise Exception(f"{instrument_id} not in {self.name} exchange_info")
         _instrument_id = self.exchange_info[instrument_id]["raw_data"]["instId"]
         market_type = self._market_type_map[self.exchange_info[instrument_id]["raw_data"]["instType"]]
         info = self.exchange_info[instrument_id]
@@ -76,7 +76,7 @@ class Okx(OkxUnified):
 
     async def get_current_candlestick(self, instrument_id: str, interval: str) -> dict:
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
 
         info = self.exchange_info[instrument_id]
         _symbol = info["raw_data"]["instId"]
@@ -142,7 +142,7 @@ class Okx(OkxUnified):
         self, instrument_id: str, start: int = None, end: int = None, num: int = 30
     ) -> list:
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
 
         info = self.exchange_info[instrument_id]
         _instrument_id = info["raw_data"]["instId"]
@@ -193,25 +193,21 @@ class Okx(OkxUnified):
 
     async def get_current_funding_rate(self, instrument_id: str) -> dict:
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
         info = self.exchange_info[instrument_id]
         _instrument_id = info["raw_data"]["instId"]
-        return {
-            instrument_id: self.parser.parse_current_funding_rate(
-                await self._get_current_funding_rate(_instrument_id), info
-            )
-        }
+        return self.parser.parse_current_funding_rate(await self._get_current_funding_rate(_instrument_id), info)
 
     async def get_last_price(self, instrument_id: str) -> dict:
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
         info = self.exchange_info[instrument_id]
         _instrument_id = info["raw_data"]["instId"]
         return self.parser.parse_last_price(await self._get_ticker(_instrument_id), info)
 
     async def get_index_price(self, instrument_id: str) -> dict:
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
         info = self.exchange_info[instrument_id]
         _instrument_id = "-".join(info["raw_data"]["instId"].split("-")[:2])
 
@@ -219,7 +215,7 @@ class Okx(OkxUnified):
 
     async def get_mark_price(self, instrument_id: str) -> dict:
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
         info = self.exchange_info[instrument_id]
         _instrument_id = info["raw_data"]["instId"]
         _market_type = info["raw_data"]["instType"].replace("SPOT", "MARGIN")  # endpoint does not support SPOT
@@ -229,7 +225,7 @@ class Okx(OkxUnified):
     async def get_open_interest(self, instrument_id: str = None, market_type: str = None) -> dict:
         if instrument_id:
             if instrument_id not in self.exchange_info:
-                raise Exception(f"{instrument_id} not found in exchange_info")
+                raise Exception(f"{instrument_id} not in exchange_info")
             info = self.exchange_info[instrument_id]
             _instrument_id = info["raw_data"]["instId"]
             return self.parser.parse_open_interest(
@@ -245,7 +241,7 @@ class Okx(OkxUnified):
 
     async def get_orderbook(self, instrument_id: str, depth: int = 20):
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
         info = self.exchange_info[instrument_id]
         _instrument_id = info["raw_data"]["instId"]
         return self.parser.parse_orderbook(await self._get_orderbook(_instrument_id, str(depth)), info)
@@ -263,7 +259,7 @@ class Okx(OkxUnified):
 
     async def place_market_order(self, instrument_id: str, side: str, volume: float, in_quote: bool = False):
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
 
         info = self.exchange_info[instrument_id]
         _instrument_id = info["raw_data"]["instId"]
@@ -284,7 +280,7 @@ class Okx(OkxUnified):
         self, instrument_id: str, side: str, price: float, volume: float, in_quote: bool = False
     ):
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
 
         info = self.exchange_info[instrument_id]
         _instrument_id = info["raw_data"]["instId"]
@@ -304,7 +300,7 @@ class Okx(OkxUnified):
 
     async def cancel_order(self, instrument_id: str, order_id: str):
         if instrument_id not in self.exchange_info:
-            raise Exception(f"{instrument_id} not found in exchange_info")
+            raise Exception(f"{instrument_id} not in exchange_info")
         info = self.exchange_info[instrument_id]
         _instrument_id = info["raw_data"]["instId"]
         return self.parser.parse_cancel_order(await self._cancel_order(_instrument_id, order_id))
@@ -319,7 +315,7 @@ class Okx(OkxUnified):
             )
         elif instrument_id:
             if instrument_id not in self.exchange_info:
-                raise Exception(f"{instrument_id} not found in exchange_info")
+                raise Exception(f"{instrument_id} not in exchange_info")
             info = self.exchange_info[instrument_id]
             _instrument_id = info["raw_data"]["instId"]
             params["instId"] = _instrument_id

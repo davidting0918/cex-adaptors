@@ -200,7 +200,7 @@ class OkxParser(Parser):
         return {
             "timestamp": self.parse_str(data["ts"], int),
             "next_funding_time": self.parse_str(data["nextFundingTime"], int),
-            "perp_instrument_id": self.parse_unified_id(info),
+            "instrument_id": self.parse_unified_id(info),
             "market_type": self._market_type_map[data["instType"]],
             "funding_rate": self.parse_str(data["fundingRate"], float),
             "raw_data": data,
