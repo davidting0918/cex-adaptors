@@ -270,7 +270,7 @@ class HtxParser(Parser):
     def parse_spot_ticker(self, response: dict, info: dict, timestamp: str):
         return {
             "timestamp": self.parse_str(timestamp, int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,
             "close_time": None,
             "open": self.parse_str(response["open"], float),
@@ -287,7 +287,7 @@ class HtxParser(Parser):
     def parse_linear_ticker(self, response: dict, info: dict):
         return {
             "timestamp": self.parse_str(response["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,
             "close_time": self.parse_str(response["ts"], int),
             "open": self.parse_str(response["open"], float),
@@ -304,7 +304,7 @@ class HtxParser(Parser):
     def parse_inverse_perp_ticker(self, response: dict, info: dict):
         return {
             "timestamp": self.parse_str(response["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,
             "close_time": self.parse_str(response["ts"], int),
             "open": self.parse_str(response["open"], float),
@@ -321,7 +321,7 @@ class HtxParser(Parser):
     def parse_inverse_futures_ticker(self, response: dict, info: dict):
         return {
             "timestamp": self.parse_str(response["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,
             "close_time": self.parse_str(response["ts"], int),
             "open": self.parse_str(response["open"], float),
@@ -360,7 +360,7 @@ class HtxParser(Parser):
         return {
             "timestamp": response["timestamp"],
             "next_funding_time": self.parse_str(data["funding_time"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "funding_rate": self.parse_str(data["funding_rate"], float),
             "raw_data": data,
@@ -376,7 +376,7 @@ class HtxParser(Parser):
         return [
             {
                 "timestamp": self.parse_str(data["funding_time"], int),
-                "instrument_id": instrument_id,
+                "perp_instrument_id": instrument_id,
                 "market_type": market_type,
                 "funding_rate": self.parse_str(data["funding_rate"], float),
                 "realized_rate": self.parse_str(data["realized_rate"], float),
@@ -432,7 +432,7 @@ class HtxParser(Parser):
         datas = response["data"]
 
         update_ = {
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "interval": interval,
         }
@@ -468,7 +468,7 @@ class HtxParser(Parser):
         data = response["data"][0]
         return {
             "timestamp": self.parse_str(data["index_ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "index_price": self.parse_str(data["index_price"], float),
             "raw_data": data,
@@ -479,7 +479,7 @@ class HtxParser(Parser):
         data = response["data"][0]
         return {
             "timestamp": self.parse_str(data["id"], int) * 1000,
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "mark_price": self.parse_str(data["close"], float),
             "raw_data": data,

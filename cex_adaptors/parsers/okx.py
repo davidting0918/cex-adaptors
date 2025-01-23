@@ -145,7 +145,7 @@ class OkxParser(Parser):
 
         return {
             "timestamp": self.parse_str(response["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,
             "close_time": self.parse_str(response["ts"], int),
             "open": self.parse_str(response["open24h"], float),
@@ -185,7 +185,7 @@ class OkxParser(Parser):
             results.append(
                 {
                     "timestamp": self.parse_str(data["fundingTime"], int),
-                    "instrument_id": self.parse_unified_id(info),
+                    "perp_instrument_id": self.parse_unified_id(info),
                     "market_type": self.parse_unified_market_type(info),
                     "funding_rate": self.parse_str(data["fundingRate"], float),
                     "realized_rate": self.parse_str(data["realizedRate"], float),
@@ -258,7 +258,7 @@ class OkxParser(Parser):
         data = response["data"][0]
         return {
             "timestamp": int(data["cTime"]),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "side": data["side"],
             "price": self.parse_str(data["px"], float),
             "volume": self.parse_str(data["sz"], float),
@@ -290,7 +290,7 @@ class OkxParser(Parser):
             results.append(
                 {
                     "timestamp": int(data["cTime"]),
-                    "instrument_id": id_map[data["instId"]],
+                    "perp_instrument_id": id_map[data["instId"]],
                     "market_type": self._market_type_map[data["instType"]],
                     "side": data["side"],
                     "price": self.parse_str(data["px"], float),
@@ -314,7 +314,7 @@ class OkxParser(Parser):
             results.append(
                 {
                     "timestamp": int(data["fillTime"]),
-                    "instrument_id": id_map[data["instId"]],
+                    "perp_instrument_id": id_map[data["instId"]],
                     "market_type": self._market_type_map[data["instType"]],
                     "side": data["side"],
                     "executed_price": self.parse_str(data["fillPx"], float),
@@ -336,7 +336,7 @@ class OkxParser(Parser):
         data = response["data"][0]
         return {
             "timestamp": self.parse_str(data["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "last_price": self.parse_str(data["last"], float),
             "raw_data": data,
@@ -347,7 +347,7 @@ class OkxParser(Parser):
         data = response["data"][0]
         return {
             "timestamp": self.parse_str(data["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "index_price": self.parse_str(data["idxPx"], float),
             "raw_data": data,
@@ -358,7 +358,7 @@ class OkxParser(Parser):
         data = response["data"][0]
         return {
             "timestamp": self.parse_str(data["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "mark_price": self.parse_str(data["markPx"], float),
             "raw_data": data,
@@ -375,7 +375,7 @@ class OkxParser(Parser):
             results.append(
                 {
                     "timestamp": self.parse_str(data["ts"], int),
-                    "instrument_id": id_map[data["instId"]],
+                    "perp_instrument_id": id_map[data["instId"]],
                     "market_type": self._market_type_map[data["instType"]],
                     "oi_contract": self.parse_str(data["oi"], float),
                     "oi_currency": self.parse_str(data["oiCcy"], float),
@@ -393,7 +393,7 @@ class OkxParser(Parser):
         bids = datas["bids"]
         return {
             "timestamp": self.parse_str(datas["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "asks": [
                 {
                     "price": self.parse_str(ask[0], float),
@@ -433,7 +433,7 @@ class OkxParser(Parser):
             results.append(
                 {
                     "timestamp": self.parse_str(data[0], int),
-                    "instrument_id": instrument_id,
+                    "perp_instrument_id": instrument_id,
                     "market_type": market_type,
                     "interval": interval,
                     "open": self.parse_str(data[1], float),

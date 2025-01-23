@@ -161,7 +161,7 @@ class GateioParser(Parser):
     def parse_ticker(self, data: dict, market_type: str, info: dict) -> dict:
         return {
             "timestamp": self.get_timestamp(),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,
             "close_time": self.get_timestamp(),
             "open": None,
@@ -203,7 +203,7 @@ class GateioParser(Parser):
         return {
             "timestamp": self.get_timestamp(),
             "next_funding_time": None,  # not yet implemented
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "funding_rate": self.parse_str(data["funding_rate"], float),
             "raw_data": data,
@@ -219,7 +219,7 @@ class GateioParser(Parser):
         return [
             {
                 "timestamp": self.parse_str(data["t"], int) * 1000,
-                "instrument_id": instrument_id,
+                "perp_instrument_id": instrument_id,
                 "market_type": market_type,
                 "funding_rate": self.parse_str(data["r"], float),
                 "realized_rate": self.parse_str(data["r"], float),
@@ -232,7 +232,7 @@ class GateioParser(Parser):
         response = self.check_response(response)
         datas = response["data"]
         udpate_ = {
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "interval": interval,
         }

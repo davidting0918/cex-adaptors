@@ -126,7 +126,7 @@ class BybitParser(Parser):
     def parse_ticker(self, response: dict, market_type: str, info: dict, **kwargs) -> dict:
         return {
             "timestamp": self.parse_str(kwargs["timestamp"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,
             "close_time": self.parse_str(kwargs["timestamp"], int),
             "open": self.parse_str(response["prevPrice24h"], float),
@@ -157,7 +157,7 @@ class BybitParser(Parser):
         results = [
             {
                 "timestamp": self.parse_str(data[0], int),
-                "instrument_id": instrument_id,
+                "perp_instrument_id": instrument_id,
                 "market_type": market,
                 "interval": interval,
                 "open": self.parse_str(data[1], float),
@@ -198,7 +198,7 @@ class BybitParser(Parser):
             results.append(
                 {
                     "timestamp": self.parse_str(data["fundingRateTimestamp"], int),
-                    "instrument_id": instrument_id,
+                    "perp_instrument_id": instrument_id,
                     "market_type": market_type,
                     "funding_rate": self.parse_str(data["fundingRate"], float),
                     "realized_rate": self.parse_str(data["fundingRate"], float),
@@ -230,7 +230,7 @@ class BybitParser(Parser):
             results.append(
                 {
                     "timestamp": self.parse_str(datas["timestamp"], int),
-                    "instrument_id": self.parse_unified_id(info),
+                    "perp_instrument_id": self.parse_unified_id(info),
                     "open_interest": self.parse_str(datas["openInterest"], float),
                     "raw_data": datas,
                 }
@@ -246,7 +246,7 @@ class BybitParser(Parser):
 
         return {
             "timestamp": self.parse_str(datas["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "asks": [
                 {"price": self.parse_str(ask[0], float), "volume": self.parse_str(ask[1], float), "order_number": None}
                 for ask in asks
@@ -266,7 +266,7 @@ class BybitParser(Parser):
         market_type = self.parse_unified_market_type(info)
         return {
             "timestamp": response["timestamp"],
-            "instrument_id": instrument_id,
+            "perp_instrument_id": instrument_id,
             "market_type": market_type,
             "last_price": self.parse_str(datas["lastPrice"], float),
             "raw_data": datas,
@@ -280,7 +280,7 @@ class BybitParser(Parser):
         market_type = self.parse_unified_market_type(info)
         return {
             "timestamp": response["timestamp"],
-            "instrument_id": instrument_id,
+            "perp_instrument_id": instrument_id,
             "market_type": market_type,
             "index_price": self.parse_str(datas["indexPrice"], float),
             "raw_data": datas,
@@ -295,7 +295,7 @@ class BybitParser(Parser):
 
         return {
             "timestamp": response["timestamp"],
-            "instrument_id": instrument_id,
+            "perp_instrument_id": instrument_id,
             "market_type": market_type,
             "mark_price": self.parse_str(datas["markPrice"], float),
             "raw_data": datas,
@@ -307,7 +307,7 @@ class BybitParser(Parser):
         return {
             "timestamp": response["timestamp"],
             "next_funding_time": self.parse_str(data["nextFundingTime"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "funding_rate": self.parse_str(data["fundingRate"], float),
             "raw_data": data,

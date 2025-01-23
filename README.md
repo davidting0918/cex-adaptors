@@ -71,7 +71,7 @@ if __name__ == "__main__":
 #### Input
 ```json
 {
-    "instrument_id": "BTC/USDT:USDT"  // must be instrument_id in exchange's exchange info
+    "instrument_id": "BTC/USDT:USDT"  // must be perp_instrument_id in exchange's exchange info
 }
 ```
 

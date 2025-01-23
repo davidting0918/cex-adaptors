@@ -185,7 +185,7 @@ class KucoinParser(Parser):
 
         return {
             "timestamp": timestamp,
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,
             "close_time": timestamp,
             "open": open,
@@ -208,7 +208,7 @@ class KucoinParser(Parser):
 
         return {
             "timestamp": self.get_timestamp(),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,
             "close_time": self.get_timestamp(),
             "open": open,
@@ -228,7 +228,7 @@ class KucoinParser(Parser):
 
         return {
             "timestamp": self.parse_str(data["timePoint"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "mark_price": self.parse_str(data["value"], float),
             "raw_data": data,
@@ -244,7 +244,7 @@ class KucoinParser(Parser):
 
         return {
             "timestamp": self.parse_str(data["timePoint"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "index_price": self.parse_str(data["indexPrice"], float),
             "raw_data": data,
@@ -256,7 +256,7 @@ class KucoinParser(Parser):
 
         return {
             "timestamp": self.parse_str(data["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "bids": [
                 {
                     "price": self.parse_str(bid[0], float),
@@ -282,7 +282,7 @@ class KucoinParser(Parser):
         return {
             "timestamp": self.parse_str(data["timePoint"], int),
             "next_funding_time": None,
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "funding_rate": self.parse_str(data["value"], float),
             "raw_data": data,
@@ -298,7 +298,7 @@ class KucoinParser(Parser):
         results = [
             {
                 "timestamp": self.parse_str(data["timepoint"], int),
-                "instrument_id": instrument_id,
+                "perp_instrument_id": instrument_id,
                 "market_type": market_type,
                 "funding_rate": self.parse_str(data["fundingRate"], float),
                 "realized_rate": self.parse_str(data["fundingRate"], float),
@@ -316,7 +316,7 @@ class KucoinParser(Parser):
         result = self.parse_candlestick(data, info, market_type)
         result.update(
             {
-                "instrument_id": self.parse_unified_id(info),
+                "perp_instrument_id": self.parse_unified_id(info),
                 "market_type": self.parse_unified_market_type(info),
                 "interval": interval,
             }
@@ -328,7 +328,7 @@ class KucoinParser(Parser):
         datas = response["data"]
 
         update_ = {
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "interval": interval,
         }

@@ -111,7 +111,7 @@ class Bitget(BitgetUnified):
         info = self.exchange_info[instrument_id]
         return {
             "timestamp": ticker["timestamp"],
-            "instrument_id": instrument_id,
+            "perp_instrument_id": instrument_id,
             "market_type": self.parser.parse_unified_market_type(info),
             "last_price": ticker["last"],
             "raw_data": ticker["raw_data"],
