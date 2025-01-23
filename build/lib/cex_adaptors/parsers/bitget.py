@@ -122,7 +122,7 @@ class BitgetParser(Parser):
     def parse_ticker(self, response: dict, info: dict, market_type: str):
         return {
             "timestamp": self.parse_str(response["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": None,  # API not support
             "close_time": self.parse_str(response["ts"], int),
             "open": self.parse_str(response["open" if market_type == "spot" else "open24h"], float),
@@ -162,7 +162,7 @@ class BitgetParser(Parser):
 
         return {
             "timestamp": self.parse_str(data["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "index_price"
             if query_type == "index"
@@ -195,7 +195,7 @@ class BitgetParser(Parser):
         response = self.check_response(response)
         datas = response["data"]
         update_ = {
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "interval": interval,
         }
@@ -226,7 +226,7 @@ class BitgetParser(Parser):
         return {
             "timestamp": response["timestamp"],
             "next_funding_time": None,
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "funding_rate": self.parse_str(data["fundingRate"], float),
             "raw_data": data,
@@ -242,7 +242,7 @@ class BitgetParser(Parser):
         return [
             {
                 "timestamp": self.parse_str(data["fundingTime"], int),
-                "instrument_id": instrument_id,
+                "perp_instrument_id": instrument_id,
                 "market_type": market_type,
                 "funding_rate": self.parse_str(data["fundingRate"], float),
                 "realized_rate": self.parse_str(data["fundingRate"], float),
@@ -257,7 +257,7 @@ class BitgetParser(Parser):
 
         return {
             "timestamp": self.parse_str(datas["ts"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "asks": [
                 {
                     "price": self.parse_str(ask[0], float),

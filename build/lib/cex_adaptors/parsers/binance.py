@@ -82,7 +82,7 @@ class BinanceParser(Parser):
 
         return {
             "timestamp": self.parse_str(response["closeTime"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "open_time": self.parse_str(response["openTime"], int),
             "close_time": self.parse_str(response["closeTime"], int),
             "open": self.parse_str(response["openPrice"], float),
@@ -160,7 +160,7 @@ class BinanceParser(Parser):
         for data in datas:
             result = {
                 "timestamp": int(round(self.parse_str(data["fundingTime"], int) / 1000)) * 1000,
-                "instrument_id": self.parse_unified_id(info),
+                "perp_instrument_id": self.parse_unified_id(info),
                 "market_type": self.parse_unified_market_type(info),
                 "funding_rate": self.parse_str(data["fundingRate"], float),
                 "realized_rate": None,
@@ -175,7 +175,7 @@ class BinanceParser(Parser):
 
         return {
             "timestamp": data["close_time"],
-            "instrument_id": instrument_id,
+            "perp_instrument_id": instrument_id,
             "market_type": self.parse_unified_market_type(info),
             "last_price": self.parse_str(data["last"], float),
             "raw_data": data,
@@ -191,7 +191,7 @@ class BinanceParser(Parser):
         if market_type == "spot":
             return {
                 "timestamp": self.parse_str(data["calcTime"], int),
-                "instrument_id": self.parse_unified_id(info),
+                "perp_instrument_id": self.parse_unified_id(info),
                 "market_type": self.parse_unified_market_type(info),
                 "index_price": self.parse_str(data["price"], float),
                 "raw_data": data,
@@ -199,7 +199,7 @@ class BinanceParser(Parser):
         else:  # linear, inverse
             return {
                 "timestamp": self.parse_str(data["time"], int),
-                "instrument_id": self.parse_unified_id(info),
+                "perp_instrument_id": self.parse_unified_id(info),
                 "market_type": self.parse_unified_market_type(info),
                 "index_price": self.parse_str(data["indexPrice"], float),
                 "raw_data": data,
@@ -214,7 +214,7 @@ class BinanceParser(Parser):
 
         return {
             "timestamp": self.parse_str(data["time"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "mark_price": self.parse_str(data["markPrice"], float),
             "raw_data": data,
@@ -226,7 +226,7 @@ class BinanceParser(Parser):
 
         return {
             "timestamp": self.parse_str(data["time"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "oi_contract": self.parse_str(data["openInterest"], float),
             "oi_currency": None,
@@ -239,7 +239,7 @@ class BinanceParser(Parser):
 
         results = {
             "timestamp": self.get_timestamp(),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "asks": [
                 {
                     "price": self.parse_str(ask[0], float),
@@ -291,7 +291,7 @@ class BinanceParser(Parser):
         return {
             "timestamp": self.parse_str(data["time"], int),
             "next_funding_time": self.parse_str(data["nextFundingTime"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "market_type": self.parse_unified_market_type(info),
             "funding_rate": self.parse_str(data["lastFundingRate"], float),
             "raw_data": data,
@@ -309,7 +309,7 @@ class BinanceParser(Parser):
             results.append(
                 {
                     "timestamp": self.parse_str(data[0], int),
-                    "instrument_id": instrument_id,
+                    "perp_instrument_id": instrument_id,
                     "market_type": market_type,
                     "interval": interval,
                     "open": self.parse_str(data[1], float),
@@ -329,7 +329,7 @@ class BinanceParser(Parser):
 
         return {
             "timestamp": self.parse_str(data["transactTime"], int),
-            "instrument_id": self.parse_unified_id(info),
+            "perp_instrument_id": self.parse_unified_id(info),
             "side": data["side"].lower(),
             "price": self.parse_str(data["price"], float),
             "volume": self.parse_str(data["executedQty"], float),

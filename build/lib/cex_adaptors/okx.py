@@ -241,7 +241,7 @@ class Okx(OkxUnified):
             return self.parser.parse_open_interest(await self._get_open_interest(instType=_market), self.exchange_info)
 
         else:
-            raise Exception("instrument_id or market must be provided")
+            raise Exception("perp_instrument_id or market must be provided")
 
     async def get_orderbook(self, instrument_id: str, depth: int = 20):
         if instrument_id not in self.exchange_info:
@@ -327,7 +327,7 @@ class Okx(OkxUnified):
                 await self._get_opended_orders(**params), infos=self.exchange_info
             )
         else:
-            raise Exception("market_type or instrument_id must be provided")
+            raise Exception("market_type or perp_instrument_id must be provided")
 
         return results
 
@@ -349,6 +349,6 @@ class Okx(OkxUnified):
             )
 
         else:
-            raise Exception("market_type or instrument_id must be provided")
+            raise Exception("market_type or perp_instrument_id must be provided")
 
         return results

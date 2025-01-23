@@ -21,6 +21,19 @@ def get_yesterday_timestamp():
     return int(dt(date.year, date.month, date.day).timestamp() * 1000)
 
 
+class TestOkxPublic(IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.exchange = Okx()
+
+    async def asyncTearDown(self):
+        await self.exchange.close()
+
+    async def test_get_exchange_info(self):
+        exchange_info = await self.exchange.get_exchange_info()
+        self.assertTrue(exchange_info)
+        return
+
+
 class TestOkx(IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         self.exchange = Okx(
@@ -713,7 +726,7 @@ class TestBybit(IsolatedAsyncioTestCase):
 class TestOutputStructure(IsolatedAsyncioTestCase):
     ticker_structure = {
         "timestamp": int,
-        "instrument_id": str,
+        "perp_instrument_id": str,
         "open_time": int,
         "close_time": int,
         "open": float,
@@ -729,14 +742,14 @@ class TestOutputStructure(IsolatedAsyncioTestCase):
     current_funding_rate_structure = {
         "timestamp": int,
         "next_funding_time": int,
-        "instrument_id": str,
+        "perp_instrument_id": str,
         "market_type": str,
         "funding_rate": float,
         "raw_data": dict,
     }
     history_funding_rate_structure = {
         "timestamp": int,
-        "instrument_id": str,
+        "perp_instrument_id": str,
         "market_type": str,
         "funding_rate": float,
         "realized_rate": float,
@@ -744,7 +757,7 @@ class TestOutputStructure(IsolatedAsyncioTestCase):
     }
     candlesticks_structure = {
         "timestamp": int,
-        "instrument_id": str,
+        "perp_instrument_id": str,
         "market_type": str,
         "interval": str,
         "open": float,
@@ -758,21 +771,21 @@ class TestOutputStructure(IsolatedAsyncioTestCase):
     }
     last_price_structure = {
         "timestamp": int,
-        "instrument_id": str,
+        "perp_instrument_id": str,
         "market_type": str,
         "last_price": float,
         "raw_data": dict,
     }
     index_price_structure = {
         "timestamp": int,
-        "instrument_id": str,
+        "perp_instrument_id": str,
         "market_type": str,
         "index_price": float,
         "raw_data": dict,
     }
     mark_price_structure = {
         "timestamp": int,
-        "instrument_id": str,
+        "perp_instrument_id": str,
         "market_type": str,
         "mark_price": float,
         "raw_data": dict,
@@ -835,7 +848,7 @@ class TestOutputStructure(IsolatedAsyncioTestCase):
     async def test_current_funding_rate_structure(self):
         """
         Test if the output of get_current_funding_rate() has the correct structure.
-        1. return should be a nested dictionary with instrument_id as the first key
+        1. return should be a nested dictionary with perp_instrument_id as the first key
         2. all the keys in the output should be the same
         3. all the values should be the correct type
         """
@@ -1010,7 +1023,7 @@ class TestOutputStructure(IsolatedAsyncioTestCase):
     async def test_get_history_candlesticks(self):
         """
         Test if the output of get_history_candlesticks() has the correct structure.
-        1. return should be dict of a list, instrument_id as the first key
+        1. return should be dict of a list, perp_instrument_id as the first key
         2. all the keys in the output should be the same
         3. all the values should be the correct type
         4. test different query method
@@ -1034,7 +1047,7 @@ class TestOutputStructure(IsolatedAsyncioTestCase):
             # futures = [k for k, v in exchange.exchange_info.items() if v["is_futures"]][0]
 
             for instrument_id in [spot, perp]:
-                params = {"instrument_id": instrument_id, "interval": interval}
+                params = {"perp_instrument_id": instrument_id, "interval": interval}
                 # (num) test
                 datas = await exchange.get_history_candlesticks(**params, num=num)
                 print(exchange.name, instrument_id, len(datas))
@@ -1084,7 +1097,7 @@ class TestOutputStructure(IsolatedAsyncioTestCase):
     async def test_price_related_structure(self):
         """
         Test if the output of get_last_price(), get_index_price(), get_mark_price() has the correct structure.
-        1. return should be dict, instrument_id as the first key
+        1. return should be dict, perp_instrument_id as the first key
         2. all the keys in the output should be the same
         3. all the values should be the correct type
 

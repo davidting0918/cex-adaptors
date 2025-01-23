@@ -277,7 +277,7 @@ class Htx(object):
 
         return {
             "timestamp": ticker["timestamp"],
-            "instrument_id": instrument_id,
+            "perp_instrument_id": instrument_id,
             "market_type": self.parser.parse_unified_market_type(info),
             "last_price": ticker["last"],
             "raw_data": ticker,
