@@ -5,7 +5,13 @@ from datetime import timedelta as td
 from unittest import IsolatedAsyncioTestCase
 
 from cex_adaptors.okx import Okx
-from tests.schemas import CurrentFundingRate
+from tests.schemas import (
+    CurrentFundingRate,
+    ExchangeInfo,
+    HistoryFundingRate,
+    Kline,
+    Ticker,
+)
 from tests.utils import validate_dict_response
 
 tracemalloc.start()
@@ -24,6 +30,10 @@ class TestOkx(IsolatedAsyncioTestCase):
     async def test_get_exchange_info(self):
         response = await self.okx.get_exchange_info()
         self.assertTrue(response)
+
+        # validate data schema
+        for i in response:
+            self.assertTrue(validate_dict_response(response[i], ExchangeInfo))
         return
 
     async def test_get_tickers(self):
@@ -44,8 +54,14 @@ class TestOkx(IsolatedAsyncioTestCase):
         spot = await self.okx.get_ticker(self.spot_instrument_id)
         self.assertTrue(spot)
 
+        # validate data schema
+        self.assertTrue(validate_dict_response(spot, Ticker))
+
         perp = await self.okx.get_ticker(self.perp_instrument_id)
         self.assertTrue(perp)
+
+        # validate data schema
+        self.assertTrue(validate_dict_response(perp, Ticker))
 
         return
 
@@ -53,9 +69,16 @@ class TestOkx(IsolatedAsyncioTestCase):
         spot = await self.okx.get_history_candlesticks(self.spot_instrument_id, "1d", num=120)
         self.assertEqual(len(spot), 120)
 
+        # validate data schema
+        for i in spot:
+            self.assertTrue(validate_dict_response(i, Kline))
+
         perp = await self.okx.get_history_candlesticks(self.perp_instrument_id, "1d", num=77)
         self.assertEqual(len(perp), 77)
 
+        # validate data schema
+        for i in perp:
+            self.assertTrue(validate_dict_response(i, Kline))
         return
 
     async def test_get_klines_with_timestamp(self):
@@ -65,8 +88,16 @@ class TestOkx(IsolatedAsyncioTestCase):
         spot = await self.okx.get_history_candlesticks(self.spot_instrument_id, "1d", start=start, end=end)
         self.assertEqual(len(spot), 30)
 
+        # validate data schema
+        for i in spot:
+            self.assertTrue(validate_dict_response(i, Kline))
+
         perp = await self.okx.get_history_candlesticks(self.perp_instrument_id, "1d", start=start, end=end)
         self.assertEqual(len(perp), 30)
+
+        # validate data schema
+        for i in perp:
+            self.assertTrue(validate_dict_response(i, Kline))
 
         return
 
@@ -81,10 +112,18 @@ class TestOkx(IsolatedAsyncioTestCase):
         history_funding_rate = await self.okx.get_history_funding_rate(self.perp_instrument_id, num=30)
         self.assertEqual(len(history_funding_rate), 30)
 
+        # validate data schema
+        for i in history_funding_rate:
+            self.assertTrue(validate_dict_response(i, HistoryFundingRate))
+
         start = int((dt.today() - td(days=2)).timestamp() * 1000)
         end = int(dt.today().timestamp() * 1000)
         history_funding_rate = await self.okx.get_history_funding_rate(self.perp_instrument_id, start=start, end=end)
         self.assertEqual(len(history_funding_rate), 6)
+
+        # validate data schema
+        for i in history_funding_rate:
+            self.assertTrue(validate_dict_response(i, HistoryFundingRate))
         return
 
 

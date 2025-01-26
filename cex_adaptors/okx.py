@@ -72,7 +72,7 @@ class Okx(OkxUnified):
         _instrument_id = self.exchange_info[instrument_id]["raw_data"]["instId"]
         market_type = self._market_type_map[self.exchange_info[instrument_id]["raw_data"]["instType"]]
         info = self.exchange_info[instrument_id]
-        return {instrument_id: self.parser.parse_ticker(await self._get_ticker(_instrument_id), market_type, info)}
+        return self.parser.parse_ticker(await self._get_ticker(_instrument_id), market_type, info)
 
     async def get_current_candlestick(self, instrument_id: str, interval: str) -> dict:
         if instrument_id not in self.exchange_info:
