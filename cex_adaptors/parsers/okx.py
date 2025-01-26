@@ -1,3 +1,6 @@
+from datetime import datetime as dt
+from datetime import timedelta as td
+
 from .base import Parser
 
 
@@ -145,8 +148,9 @@ class OkxParser(Parser):
 
         return {
             "timestamp": self.parse_str(response["ts"], int),
-            "perp_instrument_id": self.parse_unified_id(info),
-            "open_time": None,
+            "instrument_id": self.parse_unified_id(info),
+            "market_type": self.parse_unified_market_type(info),
+            "open_time": int((dt.now() - td(days=1)).timestamp() * 1000),
             "close_time": self.parse_str(response["ts"], int),
             "open": self.parse_str(response["open24h"], float),
             "high": self.parse_str(response["high24h"], float),
@@ -154,8 +158,9 @@ class OkxParser(Parser):
             "last": self.parse_str(response["last"], float),
             "base_volume": base_volume,
             "quote_volume": quote_volume,
-            "price_change": None,
-            "price_change_percent": None,
+            "price_change": self.parse_str(response["open24h"], float) - self.parse_str(response["last"], float),
+            "price_change_percent": self.parse_str(response["open24h"], float)
+            - self.parse_str(response["last"], float) / self.parse_str(response["open24h"], float) * 100,
             "raw_data": response,
         }
 
@@ -185,7 +190,7 @@ class OkxParser(Parser):
             results.append(
                 {
                     "timestamp": self.parse_str(data["fundingTime"], int),
-                    "perp_instrument_id": self.parse_unified_id(info),
+                    "instrument_id": self.parse_unified_id(info),
                     "market_type": self.parse_unified_market_type(info),
                     "funding_rate": self.parse_str(data["fundingRate"], float),
                     "realized_rate": self.parse_str(data["realizedRate"], float),
@@ -433,7 +438,7 @@ class OkxParser(Parser):
             results.append(
                 {
                     "timestamp": self.parse_str(data[0], int),
-                    "perp_instrument_id": instrument_id,
+                    "instrument_id": instrument_id,
                     "market_type": market_type,
                     "interval": interval,
                     "open": self.parse_str(data[1], float),
