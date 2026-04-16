@@ -71,9 +71,7 @@ class Okx(OkxUnified):
             return self.parser.parse_tickers(await self._get_tickers("SWAP"), "perp", self.exchange_info)
         else:
             market_types = ["spot", "futures", "perp"]
-            raw_tickers = await asyncio.gather(
-                *(self._get_tickers(self.market_type_map[mt]) for mt in market_types)
-            )
+            raw_tickers = await asyncio.gather(*(self._get_tickers(self.market_type_map[mt]) for mt in market_types))
             results = {}
             for mt, raw in zip(market_types, raw_tickers):
                 results.update(self.parser.parse_tickers(raw, mt, self.exchange_info))
