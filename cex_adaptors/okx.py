@@ -1,9 +1,25 @@
-import tracemalloc
+import asyncio
+import math
 
 from .exchanges.okx import OkxUnified
 from .parsers.okx import OkxParser
 
-tracemalloc.start()
+_INTERVAL_MS = {
+    "1m": 60_000,
+    "3m": 180_000,
+    "5m": 300_000,
+    "15m": 900_000,
+    "30m": 1_800_000,
+    "1h": 3_600_000,
+    "2h": 7_200_000,
+    "4h": 14_400_000,
+    "6h": 21_600_000,
+    "12h": 43_200_000,
+    "1d": 86_400_000,
+    "2d": 172_800_000,
+    "3d": 259_200_000,
+    "1w": 604_800_000,
+}
 
 
 class Okx(OkxUnified):
@@ -32,18 +48,16 @@ class Okx(OkxUnified):
             )
 
         else:
-            spot = self.parser.parse_exchange_info(
-                await self._get_exchange_info("SPOT"), self.parser.spot_margin_exchange_info_parser
+            spot_raw, margin_raw, futures_raw, perp_raw = await asyncio.gather(
+                self._get_exchange_info("SPOT"),
+                self._get_exchange_info("MARGIN"),
+                self._get_exchange_info("FUTURES"),
+                self._get_exchange_info("SWAP"),
             )
-            margin = self.parser.parse_exchange_info(
-                await self._get_exchange_info("MARGIN"), self.parser.spot_margin_exchange_info_parser
-            )
-            futures = self.parser.parse_exchange_info(
-                await self._get_exchange_info("FUTURES"), self.parser.futures_perp_exchange_info_parser
-            )
-            perp = self.parser.parse_exchange_info(
-                await self._get_exchange_info("SWAP"), self.parser.futures_perp_exchange_info_parser
-            )
+            spot = self.parser.parse_exchange_info(spot_raw, self.parser.spot_margin_exchange_info_parser)
+            margin = self.parser.parse_exchange_info(margin_raw, self.parser.spot_margin_exchange_info_parser)
+            futures = self.parser.parse_exchange_info(futures_raw, self.parser.futures_perp_exchange_info_parser)
+            perp = self.parser.parse_exchange_info(perp_raw, self.parser.futures_perp_exchange_info_parser)
             exchange_info = {**self.parser.combine_spot_margin_exchange_info(spot, margin), **futures, **perp}
         return exchange_info
 
@@ -56,14 +70,13 @@ class Okx(OkxUnified):
         elif market_type == "perp":
             return self.parser.parse_tickers(await self._get_tickers("SWAP"), "perp", self.exchange_info)
         else:
+            market_types = ["spot", "futures", "perp"]
+            raw_tickers = await asyncio.gather(
+                *(self._get_tickers(self.market_type_map[mt]) for mt in market_types)
+            )
             results = {}
-            for market_type in ["spot", "futures", "perp"]:
-                _market_type = self.market_type_map[market_type]
-                parsed_tickers = self.parser.parse_tickers(
-                    await self._get_tickers(_market_type), market_type, self.exchange_info
-                )
-                results.update(parsed_tickers)
-
+            for mt, raw in zip(market_types, raw_tickers):
+                results.update(self.parser.parse_tickers(raw, mt, self.exchange_info))
             return results
 
     async def get_ticker(self, instrument_id: str):
@@ -99,23 +112,48 @@ class Okx(OkxUnified):
 
         results = []
         if start and end:
-            query_end = end + 1
-            while True:
-                params.update({"after": query_end})
-                datas = self.parser.parse_candlesticks(await self._get_klines(**params), info, interval)
-                results.extend(datas)
+            interval_ms = _INTERVAL_MS.get(interval)
+            if interval_ms is not None:
+                # Page spans `limit * interval_ms`; anchors paginate backwards from `end + 1`.
+                page_span = limit * interval_ms
+                num_pages = math.ceil((end - start) / page_span) + 1
+                anchors = [end + 1 - i * page_span for i in range(num_pages) if end + 1 - i * page_span > start]
 
-                # exclude same timestamp datas
-                results = list({v["timestamp"]: v for v in results}.values())
+                raw_pages = await asyncio.gather(
+                    *(self._get_klines(instId=_instrument_id, bar=_interval, limit=limit, after=a) for a in anchors)
+                )
+                dedup = {}
+                for raw in raw_pages:
+                    page = self.parser.parse_candlesticks(raw, info, interval)
+                    if isinstance(page, dict):
+                        page = [page]
+                    for item in page:
+                        dedup[item["timestamp"]] = item
+                results = sorted(
+                    (v for v in dedup.values() if start <= v["timestamp"] <= end),
+                    key=lambda x: x["timestamp"],
+                )
+            else:
+                # Unknown ms-per-candle (e.g. 1M/3M); fall back to serial pagination.
+                query_end = end + 1
+                while True:
+                    params.update({"after": query_end})
+                    datas = self.parser.parse_candlesticks(await self._get_klines(**params), info, interval)
+                    results.extend(datas)
 
-                if not datas or len(datas) < limit:
-                    break
-                query_end = min([v["timestamp"] for v in datas]) + 1
-                if query_end < start:
-                    break
-            results = sorted(
-                [v for v in results if start <= v["timestamp"] <= end], key=lambda x: x["timestamp"], reverse=False
-            )
+                    # exclude same timestamp datas
+                    results = list({v["timestamp"]: v for v in results}.values())
+
+                    if not datas or len(datas) < limit:
+                        break
+                    query_end = min(v["timestamp"] for v in datas) + 1
+                    if query_end < start:
+                        break
+                results = sorted(
+                    [v for v in results if start <= v["timestamp"] <= end],
+                    key=lambda x: x["timestamp"],
+                    reverse=False,
+                )
         elif num:
             query_end = end
             while True:

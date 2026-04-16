@@ -1,4 +1,3 @@
-import tracemalloc
 import unittest
 from datetime import datetime as dt
 from datetime import timedelta as td
@@ -13,8 +12,6 @@ from tests.schemas import (
     Ticker,
 )
 from tests.utils import validate_dict_response
-
-tracemalloc.start()
 
 
 class TestOkx(IsolatedAsyncioTestCase):

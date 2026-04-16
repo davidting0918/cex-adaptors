@@ -1,15 +1,29 @@
 import json
+from typing import Optional
 
 import aiohttp
 
 from .auth import BinanceAuth, OkxAuth
+
+DEFAULT_TIMEOUT = aiohttp.ClientTimeout(total=10, sock_connect=3, sock_read=5)
 
 
 class BaseClient(object):
     name = None
 
     def __init__(self) -> None:
-        self._session = aiohttp.ClientSession()
+        self._session: Optional[aiohttp.ClientSession] = None
+
+    def _get_session(self) -> aiohttp.ClientSession:
+        if self._session is None or self._session.closed:
+            connector = aiohttp.TCPConnector(
+                limit=100,
+                ttl_dns_cache=300,
+                use_dns_cache=True,
+                keepalive_timeout=60,
+            )
+            self._session = aiohttp.ClientSession(connector=connector, timeout=DEFAULT_TIMEOUT)
+        return self._session
 
     async def _request(self, method: str, url: str, **kwargs):
         if "auth_data" in kwargs:
@@ -30,11 +44,12 @@ class BaseClient(object):
                 kwargs["params"] = auth.update_params(kwargs.get("params", {}))
                 kwargs["headers"] = headers
 
+        session = self._get_session()
         if method == "GET":
-            async with self._session.get(url, **kwargs) as response:
+            async with session.get(url, **kwargs) as response:
                 return await self._handle_response(response)
         elif method == "POST":
-            async with self._session.post(url, **kwargs) as response:
+            async with session.post(url, **kwargs) as response:
                 return await self._handle_response(response)
         else:
             raise ValueError(f"Invalid method: {method}")
@@ -56,4 +71,5 @@ class BaseClient(object):
         return await self._request("POST", url, **kwargs)
 
     async def close(self):
-        await self._session.close()
+        if self._session is not None and not self._session.closed:
+            await self._session.close()

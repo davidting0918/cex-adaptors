@@ -1,10 +1,7 @@
-import tracemalloc
 from typing import Literal, Optional
 
 from .exchanges.binance import BinanceInverse, BinanceLinear, BinanceSpot
 from .parsers.binance import BinanceParser
-
-tracemalloc.start()
 
 
 class Binance(object):
