@@ -1,0 +1,38 @@
+[
+  {
+    "symbol": "BTCUSDT",
+    "priceChange": "100.00",
+    "priceChangePercent": "0.500",
+    "weightedAvgPrice": "20000.00",
+    "lastPrice": "20000.00",
+    "lastQty": "0.10",
+    "openPrice": "19900.00",
+    "highPrice": "20100.00",
+    "lowPrice": "19800.00",
+    "volume": "1000.00",
+    "quoteVolume": "20000000.00",
+    "openTime": 1700000000000,
+    "closeTime": 1700086400000,
+    "firstId": 1,
+    "lastId": 1000,
+    "count": 1000
+  },
+  {
+    "symbol": "1000SHIBUSDT",
+    "priceChange": "0.0001",
+    "priceChangePercent": "0.5",
+    "weightedAvgPrice": "0.020",
+    "lastPrice": "0.020",
+    "lastQty": "1",
+    "openPrice": "0.0199",
+    "highPrice": "0.021",
+    "lowPrice": "0.0195",
+    "volume": "5000000",
+    "quoteVolume": "100000",
+    "openTime": 1700000000000,
+    "closeTime": 1700086400000,
+    "firstId": 1,
+    "lastId": 100,
+    "count": 100
+  }
+]

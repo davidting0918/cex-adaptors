@@ -1,0 +1,13 @@
+[
+  {
+    "symbol": "BTCUSD_PERP",
+    "pair": "BTCUSD",
+    "markPrice": "20000.00000000",
+    "indexPrice": "20010.00000000",
+    "estimatedSettlePrice": "20005.00000000",
+    "lastFundingRate": "0.00010000",
+    "nextFundingTime": 1700028800000,
+    "interestRate": "",
+    "time": 1700000000000
+  }
+]

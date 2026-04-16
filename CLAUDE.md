@@ -14,16 +14,16 @@ planned for `2.0.x`. Target runtime is Python 3.13 and **all public methods are 
 ```bash
 # Install runtime + dev deps
 pip install -r requirements.txt
-pip install -r test_requirements.txt      # adds pydantic for schema validation
+pip install -r test_requirements.txt
 
-# Run the public OKX test suite (this is what CI runs)
-PYTHONPATH=. python3 tests/test_okx_pub.py
+# Run the unit suite (offline, fixture-driven — this is what CI runs)
+PYTHONPATH=. python3 -m unittest discover tests/unit -v
 
-# Run a single test case
-PYTHONPATH=. python3 -m unittest tests.test_okx_pub.TestOkx.test_get_tickers
+# Run a single unit test case
+PYTHONPATH=. python3 -m unittest tests.unit.binance.test_parser.TestBinanceTicker
 
-# Full test_main.py requires .env with API credentials for each exchange
-PYTHONPATH=. python3 -m unittest test_main.py
+# Run live integration smoke tests (opt-in, hits real exchange APIs)
+RUN_INTEGRATION_TESTS=1 PYTHONPATH=. python3 -m unittest discover tests/integration -v
 
 # Lint / format (pre-commit enforces these; runs black, isort, flake8, yamllint)
 pre-commit run --all-files
@@ -33,8 +33,11 @@ python3 setup.py sdist bdist_wheel
 twine upload dist/*
 ```
 
-CI runs `pre-commit run --all-files` and `python3 tests/test_okx_pub.py` on every push/PR
-(`.github/workflows/`).
+CI runs `pre-commit run --all-files` and `python3 -m unittest discover tests/unit` on every
+push/PR (`.github/workflows/`). The `tests/unit` suite is fixture-driven and never hits the
+network — exchange HTTP clients are mocked with `unittest.mock.AsyncMock`. The `tests/integration`
+suite hits real public endpoints and is gated by `RUN_INTEGRATION_TESTS=1`; run it locally (or in
+a nightly workflow) to catch exchange-side API drift.
 
 ## Architecture
 
@@ -71,14 +74,21 @@ touching all three layers:
 - **`raw_data`** — every unified record includes the untouched exchange payload under `raw_data` so
   callers can access exchange-specific fields without breaking the abstraction.
 
-### Response contracts
+### Testing layout
 
-The unified output schemas are documented with examples in [README.md](README.md) and enforced in
-tests via pydantic models in [tests/schemas.py](tests/schemas.py): `Ticker`, `Kline`,
-`ExchangeInfo`, `CurrentFundingRate`, `HistoryFundingRate`. `Ticker` and `Kline` include
-`model_validator` checks (OHLC sanity, `quote_volume / base_volume` vs `last` within 5%) — new
-parsers must satisfy these invariants. Validate new/changed parsers by running the OKX test as a
-template and using `validate_dict_response` from [tests/utils.py](tests/utils.py).
+Tests are split into two strictly separated folders:
+
+- `tests/unit/{exchange}/` — fast, offline, fixture-driven. Each exchange has a `fixtures/`
+  folder of raw JSON captured from the exchange, plus `test_parser.py` (exercises parser
+  methods directly on fixtures) and `test_adaptor.py` (instantiates the adaptor and replaces
+  the underlying HTTP client methods with `AsyncMock`). CI runs only this suite, and it must
+  not touch the network.
+- `tests/integration/{exchange}/` — live smoke tests against real public endpoints, gated by
+  `RUN_INTEGRATION_TESTS=1`. These catch exchange-side API drift and verify the unified
+  contract end-to-end. Keep them small (one assertion per endpoint).
+
+When fixtures go stale (exchange changes a field), the unit suite will still pass while the
+integration suite starts failing — that divergence is the signal to re-capture fixtures.
 
 ### Candle / funding-rate range semantics
 
@@ -91,8 +101,9 @@ logic in the top-level adaptor class, not in the parser.
 
 Follow [dev.md](dev.md): create `cex_adaptors/exchanges/{name}.py` (extending `BaseClient`),
 `cex_adaptors/parsers/{name}.py` (extending `Parser`), and `cex_adaptors/{name}.py` (the adaptor
-stitching them together). Mirror the `Okx` implementation as a reference and add a public test file
-under `tests/` that validates against the pydantic schemas.
+stitching them together). Mirror the `Binance` implementation as a reference. Add tests under
+both `tests/unit/{name}/` (fixtures + parser + adaptor) and `tests/integration/{name}/`
+(live smoke tests, gated by `RUN_INTEGRATION_TESTS=1`).
 
 ## Style
 
