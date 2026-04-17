@@ -1,0 +1,39 @@
+{
+  "timezone": "UTC",
+  "serverTime": 1700000000000,
+  "symbols": [
+    {
+      "symbol": "BTCUSDT",
+      "pair": "BTCUSDT",
+      "status": "TRADING",
+      "contractType": "PERPETUAL",
+      "baseAsset": "BTC",
+      "quoteAsset": "USDT",
+      "marginAsset": "USDT",
+      "onboardDate": 1569398400000,
+      "deliveryDate": 4133404800000
+    },
+    {
+      "symbol": "1000SHIBUSDT",
+      "pair": "1000SHIBUSDT",
+      "status": "TRADING",
+      "contractType": "PERPETUAL",
+      "baseAsset": "1000SHIB",
+      "quoteAsset": "USDT",
+      "marginAsset": "USDT",
+      "onboardDate": 1620000000000,
+      "deliveryDate": 4133404800000
+    },
+    {
+      "symbol": "BTCUSDT_240329",
+      "pair": "BTCUSDT",
+      "status": "TRADING",
+      "contractType": "CURRENT_QUARTER",
+      "baseAsset": "BTC",
+      "quoteAsset": "USDT",
+      "marginAsset": "USDT",
+      "onboardDate": 1690000000000,
+      "deliveryDate": 1711699200000
+    }
+  ]
+}

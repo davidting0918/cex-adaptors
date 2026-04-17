@@ -1,0 +1,39 @@
+{
+  "timezone": "UTC",
+  "serverTime": 1700000000000,
+  "symbols": [
+    {
+      "symbol": "BTCUSDT",
+      "status": "TRADING",
+      "baseAsset": "BTC",
+      "baseAssetPrecision": 8,
+      "quoteAsset": "USDT",
+      "quotePrecision": 8,
+      "quoteAssetPrecision": 8,
+      "isSpotTradingAllowed": true,
+      "isMarginTradingAllowed": true
+    },
+    {
+      "symbol": "ETHUSDT",
+      "status": "TRADING",
+      "baseAsset": "ETH",
+      "baseAssetPrecision": 8,
+      "quoteAsset": "USDT",
+      "quotePrecision": 8,
+      "quoteAssetPrecision": 8,
+      "isSpotTradingAllowed": true,
+      "isMarginTradingAllowed": false
+    },
+    {
+      "symbol": "SOLBUSD",
+      "status": "BREAK",
+      "baseAsset": "SOL",
+      "baseAssetPrecision": 8,
+      "quoteAsset": "BUSD",
+      "quotePrecision": 8,
+      "quoteAssetPrecision": 8,
+      "isSpotTradingAllowed": true,
+      "isMarginTradingAllowed": false
+    }
+  ]
+}

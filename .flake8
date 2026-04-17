@@ -1,3 +1,7 @@
 [flake8]
-ignore = W605, E501, E203, W503
+# E712/E713/W604/E231 are pinned flake8 3.7.7 false positives on f-string contents
+# ("== True" inside pandas query strings, "not X in Y" inside error messages,
+# backticks inside string literals, ":" inside f"{base}:{quote}" literals).
+ignore = W605, E501, E203, W503, E712, E713, W604, E231
 max-line-length = 120
+exclude = build, dist, .eggs, *.egg-info

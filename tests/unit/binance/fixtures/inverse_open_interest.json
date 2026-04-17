@@ -1,0 +1,7 @@
+{
+  "symbol": "BTCUSD_PERP",
+  "pair": "BTCUSD",
+  "openInterest": "98765.000",
+  "contractType": "PERPETUAL",
+  "time": 1700000000000
+}
