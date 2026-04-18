@@ -1,0 +1,37 @@
+{
+  "code": "0",
+  "msg": "",
+  "data": [
+    {
+      "instType": "MARGIN",
+      "instId": "BTC-USDT",
+      "uly": "",
+      "instFamily": "",
+      "baseCcy": "BTC",
+      "quoteCcy": "USDT",
+      "settleCcy": "",
+      "ctVal": "",
+      "ctMult": "",
+      "ctValCcy": "",
+      "optType": "",
+      "stk": "",
+      "listTime": "1606468572000",
+      "expTime": "",
+      "lever": "10",
+      "tickSz": "0.1",
+      "lotSz": "0.00000001",
+      "minSz": "0.00001",
+      "ctType": "",
+      "alias": "",
+      "state": "live",
+      "maxLmtSz": "9999999",
+      "maxMktSz": "1000000",
+      "maxLmtAmt": "20000000",
+      "maxMktAmt": "1000000",
+      "maxTwapSz": "9999999",
+      "maxIcebergSz": "9999999",
+      "maxTriggerSz": "9999999",
+      "maxStopSz": "1000000"
+    }
+  ]
+}
