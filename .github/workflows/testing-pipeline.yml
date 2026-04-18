@@ -16,3 +16,11 @@ jobs:
         run: python3 -m unittest discover -s tests/unit/binance -t . -v
         env:
           PYTHONPATH: ${{ github.workspace }}
+      - name: Run OKX unit tests
+        run: python3 -m unittest discover -s tests/unit/okx -t . -v
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+      - name: Run Bybit unit tests
+        run: python3 -m unittest discover -s tests/unit/bybit -t . -v
+        env:
+          PYTHONPATH: ${{ github.workspace }}

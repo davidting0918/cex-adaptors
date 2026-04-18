@@ -1,0 +1,81 @@
+{
+  "retCode": 0,
+  "retMsg": "OK",
+  "result": {
+    "category": "inverse",
+    "list": [
+      {
+        "symbol": "BTCUSD",
+        "contractType": "InversePerpetual",
+        "status": "Trading",
+        "baseCoin": "BTC",
+        "quoteCoin": "USD",
+        "launchTime": "1543449600000",
+        "deliveryTime": "0",
+        "deliveryFeeRate": "",
+        "priceScale": "2",
+        "leverageFilter": {
+          "minLeverage": "1",
+          "maxLeverage": "100.00",
+          "leverageStep": "0.01"
+        },
+        "priceFilter": {
+          "minPrice": "0.50",
+          "maxPrice": "999999.00",
+          "tickSize": "0.50"
+        },
+        "lotSizeFilter": {
+          "maxOrderQty": "1000000",
+          "minOrderQty": "1",
+          "qtyStep": "1",
+          "postOnlyMaxOrderQty": "1000000",
+          "maxMktOrderQty": "500000",
+          "minNotionalValue": "5"
+        },
+        "unifiedMarginTrade": true,
+        "fundingInterval": 480,
+        "settleCoin": "BTC",
+        "copyTrading": "both",
+        "upperFundingRate": "0.00375",
+        "lowerFundingRate": "-0.00375"
+      },
+      {
+        "symbol": "ETHUSD",
+        "contractType": "InversePerpetual",
+        "status": "Trading",
+        "baseCoin": "ETH",
+        "quoteCoin": "USD",
+        "launchTime": "1585526400000",
+        "deliveryTime": "0",
+        "deliveryFeeRate": "",
+        "priceScale": "2",
+        "leverageFilter": {
+          "minLeverage": "1",
+          "maxLeverage": "100.00",
+          "leverageStep": "0.01"
+        },
+        "priceFilter": {
+          "minPrice": "0.05",
+          "maxPrice": "99999.95",
+          "tickSize": "0.05"
+        },
+        "lotSizeFilter": {
+          "maxOrderQty": "1000000",
+          "minOrderQty": "1",
+          "qtyStep": "1",
+          "postOnlyMaxOrderQty": "1000000",
+          "maxMktOrderQty": "500000",
+          "minNotionalValue": "5"
+        },
+        "unifiedMarginTrade": true,
+        "fundingInterval": 480,
+        "settleCoin": "ETH",
+        "copyTrading": "both",
+        "upperFundingRate": "0.00375",
+        "lowerFundingRate": "-0.00375"
+      }
+    ]
+  },
+  "retExtInfo": {},
+  "time": 1700000000000
+}

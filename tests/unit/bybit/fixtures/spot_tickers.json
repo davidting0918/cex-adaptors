@@ -1,0 +1,56 @@
+{
+  "retCode": 0,
+  "retMsg": "OK",
+  "result": {
+    "category": "spot",
+    "list": [
+      {
+        "symbol": "BTCUSDT",
+        "bid1Price": "19999.00",
+        "bid1Size": "1.5",
+        "ask1Price": "20001.00",
+        "ask1Size": "1.0",
+        "lastPrice": "20000.00",
+        "prevPrice24h": "19900.00",
+        "price24hPcnt": "0.005",
+        "highPrice24h": "20100.00",
+        "lowPrice24h": "19800.00",
+        "turnover24h": "20000000.00",
+        "volume24h": "1000.00",
+        "usdIndexPrice": "20005.00"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "bid1Price": "1499.50",
+        "bid1Size": "20",
+        "ask1Price": "1500.50",
+        "ask1Size": "15",
+        "lastPrice": "1500.00",
+        "prevPrice24h": "1490.00",
+        "price24hPcnt": "0.0067",
+        "highPrice24h": "1510.00",
+        "lowPrice24h": "1480.00",
+        "turnover24h": "3000000.00",
+        "volume24h": "2000.00",
+        "usdIndexPrice": "1500.50"
+      },
+      {
+        "symbol": "UNKNOWNUSDT",
+        "bid1Price": "1.00",
+        "bid1Size": "100",
+        "ask1Price": "1.01",
+        "ask1Size": "100",
+        "lastPrice": "1.005",
+        "prevPrice24h": "1.00",
+        "price24hPcnt": "0.005",
+        "highPrice24h": "1.02",
+        "lowPrice24h": "0.99",
+        "turnover24h": "10000",
+        "volume24h": "9950",
+        "usdIndexPrice": "1.005"
+      }
+    ]
+  },
+  "retExtInfo": {},
+  "time": 1700086400000
+}

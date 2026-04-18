@@ -1,0 +1,81 @@
+{
+  "retCode": 0,
+  "retMsg": "OK",
+  "result": {
+    "category": "linear",
+    "list": [
+      {
+        "symbol": "BTCUSDT",
+        "contractType": "LinearPerpetual",
+        "status": "Trading",
+        "baseCoin": "BTC",
+        "quoteCoin": "USDT",
+        "launchTime": "1585526400000",
+        "deliveryTime": "0",
+        "deliveryFeeRate": "",
+        "priceScale": "2",
+        "leverageFilter": {
+          "minLeverage": "1",
+          "maxLeverage": "100.00",
+          "leverageStep": "0.01"
+        },
+        "priceFilter": {
+          "minPrice": "0.10",
+          "maxPrice": "1999999.80",
+          "tickSize": "0.10"
+        },
+        "lotSizeFilter": {
+          "maxOrderQty": "1190.000",
+          "minOrderQty": "0.001",
+          "qtyStep": "0.001",
+          "postOnlyMaxOrderQty": "1190.000",
+          "maxMktOrderQty": "500.000",
+          "minNotionalValue": "5"
+        },
+        "unifiedMarginTrade": true,
+        "fundingInterval": 480,
+        "settleCoin": "USDT",
+        "copyTrading": "both",
+        "upperFundingRate": "0.00375",
+        "lowerFundingRate": "-0.00375"
+      },
+      {
+        "symbol": "1000SHIBUSDT",
+        "contractType": "LinearPerpetual",
+        "status": "Trading",
+        "baseCoin": "1000SHIB",
+        "quoteCoin": "USDT",
+        "launchTime": "1620000000000",
+        "deliveryTime": "0",
+        "deliveryFeeRate": "",
+        "priceScale": "6",
+        "leverageFilter": {
+          "minLeverage": "1",
+          "maxLeverage": "50.00",
+          "leverageStep": "0.01"
+        },
+        "priceFilter": {
+          "minPrice": "0.000001",
+          "maxPrice": "19.999990",
+          "tickSize": "0.000001"
+        },
+        "lotSizeFilter": {
+          "maxOrderQty": "50000000",
+          "minOrderQty": "10",
+          "qtyStep": "10",
+          "postOnlyMaxOrderQty": "50000000",
+          "maxMktOrderQty": "5000000",
+          "minNotionalValue": "5"
+        },
+        "unifiedMarginTrade": true,
+        "fundingInterval": 480,
+        "settleCoin": "USDT",
+        "copyTrading": "both",
+        "upperFundingRate": "0.00375",
+        "lowerFundingRate": "-0.00375"
+      }
+    ]
+  },
+  "retExtInfo": {},
+  "time": 1700000000000
+}
