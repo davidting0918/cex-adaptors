@@ -1,0 +1,24 @@
+{
+  "code": "0",
+  "msg": "",
+  "data": [
+    {
+      "instType": "SPOT",
+      "instId": "BTC-USDT",
+      "last": "20000",
+      "lastSz": "0.1",
+      "askPx": "20001",
+      "askSz": "1",
+      "bidPx": "19999",
+      "bidSz": "1",
+      "open24h": "19900",
+      "high24h": "20100",
+      "low24h": "19800",
+      "volCcy24h": "20000000",
+      "vol24h": "1000",
+      "sodUtc0": "19950",
+      "sodUtc8": "19960",
+      "ts": "1700086400000"
+    }
+  ]
+}
